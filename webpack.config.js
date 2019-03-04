@@ -6,6 +6,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
