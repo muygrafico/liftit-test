@@ -1,0 +1,8 @@
+# ignore node_modules 
+node_modules/
+# ignore generated files
+app/
+# ignore macOS folder generated info
+.DS_Store
+# igonore local env file
+.env
