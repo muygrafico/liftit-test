@@ -1,12 +1,11 @@
-import { authConstants } from '../constants';
+import { authConstants } from '../constants'
 
 const initialAuthState = {
   error: {
     message: ''
   },
   isLoggedIn: false
-};
-
+}
 
 const auth = (state = initialAuthState, action) => {
   switch (action.type) {
@@ -14,21 +13,21 @@ const auth = (state = initialAuthState, action) => {
       return [
         ...state,
         {
-          authenticaded: action.id,
+          authenticaded: action.id
         }
       ]
     case authConstants.SUCCESS:
       return [
         ...state,
         {
-          authenticaded: action.id,
+          authenticaded: action.id
         }
       ]
     case authConstants.ERROR:
       return [
         ...state,
         {
-          authenticaded: action.id,
+          authenticaded: action.id
         }
       ]
     default:
