@@ -31,12 +31,3 @@ const Root = ({ store }) => (
 )
 
 render(<Root store={store} />, document.getElementById('index'))
-
-// render(
-//   <Provider store={store}>
-//     <Router>
-//       <Route component={App} />
-//     </Router>
-//   </Provider>,
-//   document.getElementById('index')
-// );

@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react'
 
-// const LoggedIn = () => (
-//   <div>
-//     <h1>Home...YEY! </h1>
-//   </div>
-// )
+const API_KEY = process.env.GOOGLE_DISTANCE_MATRIX_API_KEY
 
 const mapStyles = {
   width: '100%',
@@ -28,8 +24,6 @@ export class MapContainer extends Component {
   }
 }
 
-// export default LoggedIn
-
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCqlLhE4Fs9dLAiuS65NTTTe_udBr5VfE8'
+  apiKey: API_KEY
 })(MapContainer)
