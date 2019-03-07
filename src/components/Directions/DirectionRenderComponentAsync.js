@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import heartIcon from '../images/heart-icon.png'
-import { convertLatLngToObj } from '../utility/helper'
+// import heartIcon from '../images/heart-icon.png'
+import { convertLatLngToObj } from '../../utility/helper'
+require('@babel/polyfill')
+
 const { Marker, DirectionsRenderer } = require('react-google-maps')
 
 class DirectionRenderComponentAsync extends Component {
@@ -49,7 +51,7 @@ class DirectionRenderComponentAsync extends Component {
     this.getDirectionsPromise(startLoc, destinationLoc, [])
   }
 
-  async getDirections(startLoc, destinationLoc, wayPoints = []) {
+  async getDirections (startLoc, destinationLoc, wayPoints = []) {
     return new Promise((resolve, reject) => {
       const waypts = []
       if (wayPoints.length > 0) {
@@ -132,7 +134,6 @@ class DirectionRenderComponentAsync extends Component {
         {destinationMarker}
         {this.state.currentLocation && (
           <Marker
-            defaultIcon={heartIcon}
             position={{
               lat: this.state.currentLocation.lat,
               lng: this.state.currentLocation.lng

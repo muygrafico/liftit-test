@@ -15,7 +15,6 @@ class DirectionRenderComponent extends Component {
     const startLoc = this.props.from.lat + ', ' + this.props.from.lng
     const destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
     this.getDirections(startLoc, destinationLoc)
-    this.setCurrentLocation()
   }
 
   async getDirections (startLoc, destinationLoc, wayPoints = []) {
@@ -26,7 +25,7 @@ class DirectionRenderComponent extends Component {
           wayPoints[0].lat,
           wayPoints[0].lng
         ),
-        stopover: true
+        stopover: false
       })
     }
     const directionService = new window.google.maps.DirectionsService()
@@ -39,7 +38,6 @@ class DirectionRenderComponent extends Component {
         travelMode: window.google.maps.TravelMode.DRIVING
       },
       (result, status) => {
-        // console.log('status', status)
         if (status === window.google.maps.DirectionsStatus.OK) {
           this.setState({
             directions: result,
@@ -62,31 +60,6 @@ class DirectionRenderComponent extends Component {
     )
   }
 
-  setCurrentLocation = () => {
-    let count = 0
-    let refreshIntervalId = setInterval(() => {
-      const locations = this.state.wayPoints
-      if (locations) {
-        if (count <= locations.length - 1) {
-          const currentLocation = convertLatLngToObj(
-            locations[count].lat(),
-            locations[count].lng()
-          )
-          this.setState({ currentLocation })
-
-          const wayPts = []
-          wayPts.push(currentLocation)
-          const startLoc = this.props.from.lat + ', ' + this.props.from.lng
-          const destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
-          this.delayFactor = 0
-          this.getDirections(startLoc, destinationLoc, wayPts)
-          count++
-        } else {
-          clearInterval(refreshIntervalId)
-        }
-      }
-    }, 1000)
-  }
   render () {
     let originMarker = null
     let destinationMarker = null

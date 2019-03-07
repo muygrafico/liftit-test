@@ -3,8 +3,8 @@ import { createLocationObject } from './helper'
 
 const directions = [
   {
-    from: locationsList.Mumbai,
-    to: locationsList.Pune,
+    from: locationsList.Javeriana,
+    to: locationsList.Andino,
     strokeColor: '#f68f54'
   }
 ]

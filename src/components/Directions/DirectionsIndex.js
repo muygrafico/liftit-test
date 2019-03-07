@@ -11,8 +11,8 @@ class Directions extends Component {
     defaultZoom: 13,
     map: null,
     center: {
-      lat: 4.598077,
-      lng: -74.0761028
+      lat: 4.654096081693225,
+      lng: -74.06782049957383
     }
   }
   render () {
