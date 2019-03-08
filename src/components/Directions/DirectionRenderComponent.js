@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
 import { convertLatLngToObj } from '../../utility/helper'
-const { Marker, DirectionsRenderer } = require('react-google-maps')
+import { mapConstants } from '../../constants/maps.constants'
 require('@babel/polyfill')
+
+const { Marker, DirectionsRenderer } = require('react-google-maps')
+
+const calculateTimeCost = () => {
+  var service = new window.google.maps.DistanceMatrixService()
+  service.getDistanceMatrix({
+    origins: ['Bogota+Javeriana'],
+    destinations: ['Bogota+Centro+Comercial+Andino'],
+    travelMode: 'DRIVING',
+    avoidHighways: false,
+    avoidTolls: false
+  }, (result, status) => {
+    console.log('DistanceMatrixService', result, status)
+  })
+}
 
 class DirectionRenderComponent extends Component {
   state = {
@@ -15,6 +30,7 @@ class DirectionRenderComponent extends Component {
     const startLoc = this.props.from.lat + ', ' + this.props.from.lng
     const destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
     this.getDirections(startLoc, destinationLoc)
+    calculateTimeCost()
   }
 
   async getDirections (startLoc, destinationLoc, wayPoints = []) {
@@ -35,10 +51,15 @@ class DirectionRenderComponent extends Component {
         destination: destinationLoc,
         waypoints: waypts,
         optimizeWaypoints: true,
-        travelMode: window.google.maps.TravelMode.DRIVING
+        travelMode: window.google.maps.TravelMode.DRIVING,
+        drivingOptions: {
+          departureTime: new Date(Date.now()), // for the time N milliseconds from now.
+          trafficModel: 'optimistic'
+        }
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
+          console.log('result', result)
           this.setState({
             directions: result,
             wayPoints: result.routes[0].overview_path.filter((elem, index) => {
