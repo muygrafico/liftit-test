@@ -15,10 +15,9 @@ const store = createStore(
 
 const routing = (
   <Router>
-    <div>
-
-      <Route exact path="/" component={App} />
-      <Route path="/logged" component={LoggedIn} />
+    <div className='app-container'>
+      <Route exact path='/' component={App} />
+      <Route path='/logged' component={LoggedIn} />
     </div>
   </Router>
 )
@@ -26,7 +25,7 @@ const routing = (
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router>
-      <Route path="/:filter?" component={App} />
+      <Route path='/:filter?' component={App} />
     </Router>
   </Provider>
 )

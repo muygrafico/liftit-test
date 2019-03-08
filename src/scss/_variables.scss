@@ -4,9 +4,10 @@ $base-font-size-raw-px-size: 16;
 $base-font-size: $base-font-size-raw-px-size + 'px'; /* stylelint-disable */
 
 // colors
-$color-custom-black: #000000;
-$color-custom-white: #ffffff;
-$color-custom-transparent: transparent;
-$color-custom-light-black: #323232;
-$color-custom-blak-20: rgba($color-custom-black, .20);
-$color-custom-blak-15: rgba($color-custom-black, .15);
+$color-black: #000000;
+$color-white: #ffffff;
+$color-transparent: transparent;
+$color-light-black: #323232;
+$color-light-beige: #edebe8;
+$color-blak-20: rgba($color-black, .20);
+$color-blak-15: rgba($color-black, .15);

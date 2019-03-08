@@ -5,6 +5,8 @@ import { mapConstants } from '../../constants/maps.constants'
 import DummyLocations from '../../utility/dummyLocations'
 require('@babel/polyfill')
 
+console.log(document.body.scrollHeight)
+
 const { withScriptjs, withGoogleMap, GoogleMap } = require('react-google-maps')
 class Directions extends Component {
   state = {
@@ -42,7 +44,7 @@ export default compose(
   withProps({
     googleMapURL: mapConstants.G_API_URL,
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `600px` }} />,
+    containerElement: <div style={{ height: document.body.scrollHeight }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   withScriptjs,
