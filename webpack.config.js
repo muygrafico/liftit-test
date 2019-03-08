@@ -1,7 +1,14 @@
+'use strict'
+
+const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const WebpackMd5Hash = require('webpack-md5-hash')
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -9,11 +16,38 @@ const htmlPlugin = new HtmlWebPackPlugin({
 })
 
 module.exports = {
+  entry: { main: './src/index.js' },
+  output: {
+    path: path.resolve(__dirname, 'app'),
+    filename: '[name].[chunkhash].js'
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
   devServer: {
     historyApiFallback: true
   },
   module: {
     rules: [
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|eot|ttf|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 8192,
+          fallback: 'file-loader',
+
+          // fallback options
+          name: '[baseURL][name].[hash].[ext]',
+          outputPath: 'images/css-urls/'
+        }
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -52,6 +86,8 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(),
+    new WebpackMd5Hash(),
     htmlPlugin,
     new Dotenv(),
     new MiniCssExtractPlugin({
