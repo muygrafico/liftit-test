@@ -12,7 +12,7 @@ const WebpackMd5Hash = require('webpack-md5-hash')
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
-  filename: './index.html'
+  filename: 'index.html'
 })
 
 module.exports = {
