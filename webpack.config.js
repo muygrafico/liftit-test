@@ -9,6 +9,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
+const Webpack = require('webpack')
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -99,6 +100,9 @@ module.exports = {
       files: '**/*.scss',
       failOnError: false,
       quiet: false
+    }),
+    new Webpack.DefinePlugin({
+      GOOGLE_DISTANCE_MATRIX_API_KEY: JSON.stringify(process.env.GOOGLE_DISTANCE_MATRIX_API_KEY)
     })
   ]
 }
