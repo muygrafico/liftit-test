@@ -1,0 +1,30 @@
+/* stylelint-disable */
+@import 'variables';
+
+$browser-context: $base-font-size-raw-px-size;
+
+// use: pxtorem(32) or pxtorem(32px)
+@function pxtorem($pixels, $context: $browser-context) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+
+  @return $pixels / $context * 1rem;
+}
+
+// use: remtopx(32) or remtopx(32px)
+@function remtopx($rems, $context: $browser-context) {
+  @if (unitless($rems)) {
+    $rems: $rems * 1rem;
+  }
+
+  @if (unitless($context)) {
+    $context: $context * 1rem;
+  }
+
+  @return $rems * $context * 1px;
+}

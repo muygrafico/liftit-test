@@ -6,6 +6,7 @@ import App from './components/App'
 import LoggedIn from './components/LoggedIn'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import rootReducer from './reducers'
+import './scss/main.scss'
 
 const store = createStore(
   rootReducer,
