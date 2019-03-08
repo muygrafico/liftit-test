@@ -19,7 +19,7 @@ module.exports = {
   entry: { main: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'app'),
-    filename: '[name].js'
+    filename: '[name].[chunkhash].js'
   },
   devServer: {
     historyApiFallback: true
@@ -91,7 +91,7 @@ module.exports = {
     htmlPlugin,
     new Dotenv(),
     new MiniCssExtractPlugin({
-      filename: '[name].css'
+      filename: '[name].[contenthash].css'
     }),
     new StyleLintPlugin({
       configFile: '.stylelintrc',
