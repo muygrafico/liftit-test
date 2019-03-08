@@ -19,7 +19,10 @@ module.exports = {
   entry: { main: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'app'),
-    filename: '[name].[chunkhash].js'
+    filename: '[name].js'
+  },
+  devServer: {
+    historyApiFallback: true
   },
   optimization: {
     minimizer: [
@@ -30,9 +33,6 @@ module.exports = {
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
-  },
-  devServer: {
-    historyApiFallback: true
   },
   module: {
     rules: [
@@ -91,7 +91,7 @@ module.exports = {
     htmlPlugin,
     new Dotenv(),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: '[name].css'
     }),
     new StyleLintPlugin({
       configFile: '.stylelintrc',
