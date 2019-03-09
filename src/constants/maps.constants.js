@@ -1,4 +1,4 @@
-const KEY = process.env.GOOGLE_DISTANCE_MATRIX_API_KEY
+const KEY = process.env.GOOGLE_DISTANCE_MATRIX_API_KEY || 'AIzaSyDvZ2jHunBWZalv0woF8jDnhoryDgRLBDA'
 
 export const mapConstants = {
   KEY,
