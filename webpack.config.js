@@ -102,7 +102,7 @@ module.exports = {
       quiet: false
     }),
     new Webpack.DefinePlugin({
-      GOOGLE_DISTANCE_MATRIX_API_KEY: JSON.stringify(process.env.GOOGLE_DISTANCE_MATRIX_API_KEY)
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ]
 }
