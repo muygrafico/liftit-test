@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { convertLatLngToObj } from '../../utility/helper'
-import { mapConstants } from '../../constants/maps.constants'
+import { updateOrigin, updateDestination } from '../../actions/map.actions'
 require('@babel/polyfill')
-
+console.log('updateDestination', updateDestination)
 const { Marker, DirectionsRenderer } = require('react-google-maps')
 let googleGeocoder
 
@@ -12,15 +12,15 @@ window.onload = () => {
   // googleGeocoder = new window.google.maps.Geocoder()
 }
 
-const geoCoder = (props, callback) => {
+const geoCoder = (address, callback) => {
   googleGeocoder = new window.google.maps.Geocoder()
-  googleGeocoder.geocode({ address: props.values.origin }, (results, status) => {
+  googleGeocoder.geocode({ address }, (results, status) => {
     // eslint-disable-next-line eqeqeq
     if (status == 'OK') {
       const Lat = results[0].geometry.location.lat()
       const Lng = results[0].geometry.location.lng()
       // eslint-disable-next-line standard/no-callback-literal
-      callback({ Lat, Lng })
+      callback(`${Lat}, ${Lng}`)
     } else {
       const error = 'geoCode error :('
       throw error
@@ -52,12 +52,19 @@ class DirectionRenderComponent extends Component {
 
   componentDidUpdate (prevProps) {
     if (prevProps.values !== this.props.values) {
-      console.log(this.props.values)
       if (this.props.values && this.props.values.origin) {
-        geoCoder(this.props, (data) => {
-          let startLoc = data.Lat + ', ' + data.Lng
-          let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
-          this.getDirections(startLoc, destinationLoc)
+        geoCoder(this.props.values.origin, (origin) => {
+          this.props.updateOrigin(origin)
+          // let startLoc = origin
+          // let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
+          // this.getDirections(startLoc, destinationLoc)
+        })
+
+        geoCoder(this.props.values.destination, (destination) => {
+          this.props.updateDestination(destination)
+          // let startLoc = origin
+          // let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
+          // this.getDirections(startLoc, destinationLoc)
         })
       }
     }
@@ -176,17 +183,19 @@ class DirectionRenderComponent extends Component {
   }
 }
 
-// export default DirectionRenderComponent
-
-const mapStateToText = state => ({
+const mapStateToProps = state => ({
   values: state.form.quote.values
 })
 
-export const mapDispatch = dispatch => ({
-  dispatch: dispatch
-})
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    updateOrigin: (newValue) => dispatch(updateOrigin(newValue)),
+    updateDestination: (newValue) => dispatch(updateDestination(newValue))
+  }
+}
 
-export default connect(
-  mapStateToText,
-  mapDispatch
-)(withRouter((DirectionRenderComponent)))
+export default withRouter(
+  connect(
+    mapStateToProps, mapDispatchToProps
+  )(DirectionRenderComponent)
+)

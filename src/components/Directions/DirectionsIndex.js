@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { compose, withProps } from 'recompose'
 import DirectionRenderComponent from './DirectionRenderComponent'
-import { mapConstants } from '../../constants/maps.constants'
+import { mapConstants } from '../../constants/map.constants'
 import DummyLocations from '../../utility/dummyLocations'
 require('@babel/polyfill')
 
