@@ -5,5 +5,6 @@ export const mapConstants = {
   G_API_URL: `https://maps.googleapis.com/maps/api/js?key=${KEY}&&v=3.exp&libraries=geometry,drawing,places`,
   MAP_ORIGIN_UPDATED: 'MAP_ORIGIN_UPDATED',
   MAP_DESTINATION_UPDATED: 'MAP_DESTINATION_UPDATED',
+  MAP_CENTER_UPDATED: 'MAP_CENTER_UPDATED',
   MAP_ERROR: 'MAP_ERROR'
 }

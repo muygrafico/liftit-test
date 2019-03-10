@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { convertLatLngToObj } from '../../utility/helper'
-import { updateOrigin, updateDestination } from '../../actions/map.actions'
+import { updateOrigin, updateDestination, updateCenter } from '../../actions/map.actions'
 require('@babel/polyfill')
 console.log('updateDestination', updateDestination)
 const { Marker, DirectionsRenderer } = require('react-google-maps')
@@ -65,6 +65,7 @@ class DirectionRenderComponent extends Component {
         this.props.mapPoints.origin,
         this.props.mapPoints.destination
       )
+      this.props.updateCenter('new center')
     }
   }
 
@@ -177,7 +178,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     updateOrigin: (newValue) => dispatch(updateOrigin(newValue)),
-    updateDestination: (newValue) => dispatch(updateDestination(newValue))
+    updateDestination: (newValue) => dispatch(updateDestination(newValue)),
+    updateCenter: (newValue) => dispatch(updateCenter(newValue))
   }
 }
 

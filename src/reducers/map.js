@@ -3,7 +3,8 @@ import { mapConstants } from '../constants/map.constants'
 const initialAuthState = {
   error: '',
   origin: '',
-  destination: ''
+  destination: '',
+  center: ''
 }
 
 const map = (state = initialAuthState, action) => {
@@ -12,6 +13,8 @@ const map = (state = initialAuthState, action) => {
       return Object.assign({}, state, { origin: action.payload })
     case mapConstants.MAP_DESTINATION_UPDATED:
       return Object.assign({}, state, { destination: action.payload })
+    case mapConstants.MAP_CENTER_UPDATED:
+      return Object.assign({}, state, { center: action.payload })
     case mapConstants.MAP_ERROR:
       return Object.assign({}, state, { error: action.error })
     default:
