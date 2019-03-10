@@ -6,8 +6,13 @@ class Home extends Component {
   render () {
     return (
       <div className='home-page'>
-        <div></div>
-        <div><Directions /></div>
+        <div>
+          <input type="text" placeholder='origin' />
+          <input type="text" placeholder='destination' />
+        </div>
+        <div>
+          <Directions />
+        </div>
       </div>
     )
   }

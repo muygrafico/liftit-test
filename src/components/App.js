@@ -6,7 +6,7 @@ import LoggedIn from './LoggedIn'
 import NoMatch from './NoMatch'
 
 const App = () => (
-  <div>
+  <div className='app-container'>
     <Switch>
       <Route exact path='/' component={Home}/>
       <Route path='/logged' component={LoggedIn}/>
