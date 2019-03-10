@@ -1,9 +1,32 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { convertLatLngToObj } from '../../utility/helper'
 import { mapConstants } from '../../constants/maps.constants'
 require('@babel/polyfill')
 
 const { Marker, DirectionsRenderer } = require('react-google-maps')
+let googleGeocoder
+
+window.onload = () => {
+  // googleGeocoder = new window.google.maps.Geocoder()
+}
+
+const geoCoder = (props, callback) => {
+  googleGeocoder = new window.google.maps.Geocoder()
+  googleGeocoder.geocode({ address: props.values.origin }, (results, status) => {
+    // eslint-disable-next-line eqeqeq
+    if (status == 'OK') {
+      const Lat = results[0].geometry.location.lat()
+      const Lng = results[0].geometry.location.lng()
+      // eslint-disable-next-line standard/no-callback-literal
+      callback({ Lat, Lng })
+    } else {
+      const error = 'geoCode error :('
+      throw error
+    }
+  })
+}
 
 const calculateTimeCost = () => {
   var service = new window.google.maps.DistanceMatrixService()
@@ -22,9 +45,23 @@ class DirectionRenderComponent extends Component {
   state = {
     directions: null,
     wayPoints: null,
-    currentLocation: null
+    currentLocation: null,
+    origin: null
   }
   delayFactor = 0
+
+  componentDidUpdate (prevProps) {
+    if (prevProps.values !== this.props.values) {
+      console.log(this.props.values)
+      if (this.props.values && this.props.values.origin) {
+        geoCoder(this.props, (data) => {
+          let startLoc = data.Lat + ', ' + data.Lng
+          let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
+          this.getDirections(startLoc, destinationLoc)
+        })
+      }
+    }
+  }
 
   componentDidMount () {
     const startLoc = this.props.from.lat + ', ' + this.props.from.lng
@@ -139,4 +176,17 @@ class DirectionRenderComponent extends Component {
   }
 }
 
-export default DirectionRenderComponent
+// export default DirectionRenderComponent
+
+const mapStateToText = state => ({
+  values: state.form.quote.values
+})
+
+export const mapDispatch = dispatch => ({
+  dispatch: dispatch
+})
+
+export default connect(
+  mapStateToText,
+  mapDispatch
+)(withRouter((DirectionRenderComponent)))
