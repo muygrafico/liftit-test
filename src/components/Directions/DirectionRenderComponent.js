@@ -37,7 +37,7 @@ const calculateTimeCost = () => {
     avoidHighways: false,
     avoidTolls: false
   }, (result, status) => {
-    console.log('DistanceMatrixService', result, status)
+    // console.log('DistanceMatrixService', result, status)
   })
 }
 
@@ -52,28 +52,26 @@ class DirectionRenderComponent extends Component {
 
   componentDidUpdate (prevProps) {
     if (prevProps.values !== this.props.values) {
-      if (this.props.values && this.props.values.origin) {
-        geoCoder(this.props.values.origin, (origin) => {
-          this.props.updateOrigin(origin)
-          // let startLoc = origin
-          // let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
-          // this.getDirections(startLoc, destinationLoc)
-        })
+      geoCoder(this.props.values.origin, (origin) => {
+        this.props.updateOrigin(origin)
+      })
 
-        geoCoder(this.props.values.destination, (destination) => {
-          this.props.updateDestination(destination)
-          // let startLoc = origin
-          // let destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
-          // this.getDirections(startLoc, destinationLoc)
-        })
-      }
+      geoCoder(this.props.values.destination, (destination) => {
+        this.props.updateDestination(destination)
+      })
+
+      this.getDirections(
+        this.props.mapPoints.origin,
+        this.props.mapPoints.destination
+      )
     }
   }
 
   componentDidMount () {
-    const startLoc = this.props.from.lat + ', ' + this.props.from.lng
-    const destinationLoc = this.props.to.lat + ', ' + this.props.to.lng
-    this.getDirections(startLoc, destinationLoc)
+    this.getDirections(
+      this.props.mapPoints.origin,
+      this.props.mapPoints.destination
+    )
     calculateTimeCost()
   }
 
@@ -97,7 +95,7 @@ class DirectionRenderComponent extends Component {
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.DRIVING,
         drivingOptions: {
-          departureTime: new Date(Date.now()), // for the time N milliseconds from now.
+          departureTime: new Date(Date.now()),
           trafficModel: 'optimistic'
         }
       },
@@ -128,24 +126,22 @@ class DirectionRenderComponent extends Component {
   render () {
     let originMarker = null
     let destinationMarker = null
-    if (this.state.directions && this.props.index) {
+    if (this.props.mapPoints) {
       originMarker = (
         <Marker
-          defaultLabel={this.props.index.toString()}
-          defaultIcon={null}
+          defaultLabel='O'
           position={{
-            lat: parseFloat(this.props.from.lat),
-            lng: parseFloat(this.props.from.lng)
+            lat: parseFloat(this.props.mapPoints.origin.split(',')[0]),
+            lng: parseFloat(this.props.mapPoints.origin.split(',')[1])
           }}
         />
       )
       destinationMarker = (
         <Marker
-          label={this.props.index.toString()}
-          defaultIcon={null}
+          defaultLabel='D'
           position={{
-            lat: parseFloat(this.props.to.lat),
-            lng: parseFloat(this.props.to.lng)
+            lat: parseFloat(this.props.mapPoints.destination.split(',')[0]),
+            lng: parseFloat(this.props.mapPoints.destination.split(',')[1])
           }}
         />
       )
@@ -158,8 +154,8 @@ class DirectionRenderComponent extends Component {
           <Marker
             label={this.props.index.toString()}
             position={{
-              lat: this.state.currentLocation.lat,
-              lng: this.state.currentLocation.lng
+              lat: parseFloat(this.props.mapPoints.origin.split(',')[0]),
+              lng: parseFloat(this.props.mapPoints.origin.split(',')[1])
             }}
           />
         )}
@@ -184,7 +180,8 @@ class DirectionRenderComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-  values: state.form.quote.values
+  values: state.form.quote.values,
+  mapPoints: state.map
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => {

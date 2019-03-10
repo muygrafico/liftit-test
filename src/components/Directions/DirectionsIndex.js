@@ -22,17 +22,7 @@ class Directions extends Component {
         center={this.state.center}
         defaultCenter={new window.google.maps.LatLng(4.598077, -74.0761028)}
       >
-        {DummyLocations.map((elem, index) => {
-          return (
-            <DirectionRenderComponent
-              key={index}
-              index={index + 1}
-              strokeColor={elem.strokeColor}
-              from={elem.from}
-              to={elem.to}
-            />
-          )
-        })}
+        <DirectionRenderComponent/>
       </GoogleMap>
     )
   }
