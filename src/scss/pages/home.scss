@@ -7,20 +7,6 @@
   display: flex;
   height: 100%;
 
-
-  input[type='text'] {
-    border: pxtorem(1) solid $color-base-gray;
-    height: pxtorem(30);
-    width: 100%;
-    padding: .5rem;
-
-    &:focus,
-    &:active {
-      outline: none;
-      border: pxtorem(1) solid $color-light-black;
-    }
-  }
-
   > div {
     display: flex;
     flex-direction: column;

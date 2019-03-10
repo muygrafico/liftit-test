@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Directions from './Directions/DirectionsIndex'
+import QuoteForm from './QuoteForm'
 // import './App.css'
 
 class Home extends Component {
@@ -7,8 +8,7 @@ class Home extends Component {
     return (
       <div className='home-page'>
         <div>
-          <input type="text" placeholder='origin' />
-          <input type="text" placeholder='destination' />
+          <QuoteForm />
         </div>
         <div>
           <Directions />
