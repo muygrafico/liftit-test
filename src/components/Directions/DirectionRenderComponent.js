@@ -7,13 +7,14 @@ require('@babel/polyfill')
 console.log('updateDestination', updateDestination)
 const { Marker, DirectionsRenderer } = require('react-google-maps')
 let googleGeocoder
+let service
 
 window.onload = () => {
-  // googleGeocoder = new window.google.maps.Geocoder()
+  googleGeocoder = new window.google.maps.Geocoder()
+  service = new window.google.maps.DistanceMatrixService()
 }
 
 const geoCoder = (address, callback) => {
-  googleGeocoder = new window.google.maps.Geocoder()
   googleGeocoder.geocode({ address }, (results, status) => {
     // eslint-disable-next-line eqeqeq
     if (status == 'OK') {
@@ -76,22 +77,11 @@ class DirectionRenderComponent extends Component {
   }
 
   async getDirections (startLoc, destinationLoc, wayPoints = []) {
-    const waypts = []
-    if (wayPoints.length > 0) {
-      waypts.push({
-        location: new window.google.maps.LatLng(
-          wayPoints[0].lat,
-          wayPoints[0].lng
-        ),
-        stopover: false
-      })
-    }
     const directionService = new window.google.maps.DirectionsService()
     directionService.route(
       {
         origin: startLoc,
         destination: destinationLoc,
-        waypoints: waypts,
         optimizeWaypoints: true,
         travelMode: window.google.maps.TravelMode.DRIVING,
         drivingOptions: {
@@ -170,7 +160,7 @@ class DirectionRenderComponent extends Component {
               },
               preserveViewport: true,
               suppressMarkers: true,
-              icon: { scale: 3 }
+              icon: { scale: 1 }
             }}
           />
         )}
