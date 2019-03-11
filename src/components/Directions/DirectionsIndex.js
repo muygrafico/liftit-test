@@ -8,7 +8,7 @@ require('@babel/polyfill')
 const { withScriptjs, withGoogleMap, GoogleMap } = require('react-google-maps')
 class Directions extends Component {
   state = {
-    defaultZoom: 13,
+    defaultZoom: 11,
     map: null,
     center: {
       lat: 4.654096081693225,

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { convertLatLngToObj } from '../../utility/helper'
 import { updateOrigin, updateDestination, updateCenter } from '../../actions/map.actions'
 require('@babel/polyfill')
-console.log('updateDestination', updateDestination)
+
 const { Marker, DirectionsRenderer } = require('react-google-maps')
 let googleGeocoder
 let service
@@ -23,8 +23,7 @@ const geoCoder = (address, callback) => {
       // eslint-disable-next-line standard/no-callback-literal
       callback(`${Lat}, ${Lng}`)
     } else {
-      const error = 'geoCode error :('
-      throw error
+      console.warn(results, status)
     }
   })
 }
@@ -47,9 +46,9 @@ class DirectionRenderComponent extends Component {
     directions: null,
     wayPoints: null,
     currentLocation: null,
-    origin: null
+    origin: null,
+    delayFactor: 2
   }
-  delayFactor = 0
 
   componentDidUpdate (prevProps) {
     if (prevProps.values !== this.props.values) {
@@ -92,7 +91,6 @@ class DirectionRenderComponent extends Component {
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
-          console.log('result', result)
           this.setState({
             directions: result,
             wayPoints: result.routes[0].overview_path.filter((elem, index) => {
@@ -102,13 +100,13 @@ class DirectionRenderComponent extends Component {
         } else if (
           status === window.google.maps.DirectionsStatus.OVER_QUERY_LIMIT
         ) {
-          this.delayFactor += 0.2
-          // if (this.delayFactor <= 10) this.delayFactor = 0.2
+          this.state.delayFactor += 0.2
+          // if (this.state.delayFactor <= 10) this.state.delayFactor = 0.2
           setTimeout(() => {
             this.getDirections(startLoc, destinationLoc, wayPoints)
-          }, this.delayFactor * 200)
+          }, this.state.delayFactor * 200)
         } else {
-          console.error(`error fetching directions ${result}`)
+          console.warn(`error fetching directions ${result}`)
         }
       }
     )
