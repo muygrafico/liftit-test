@@ -1,13 +1,7 @@
-// import React from 'react'
-
-// export default () => (
-//   <div className='input-text'>
-//     <input type="text"/>
-//   </div>
-// )
-
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 let QuoteForm = props => {
   return (
@@ -20,14 +14,23 @@ let QuoteForm = props => {
         <label htmlFor="destination">destination</label>
         <Field name="destination" component="input" type="text" />
       </div>
-      <button type="submit">update</button>
+      <h4>{props.mapDistance}</h4>
+      <h4>{props.mapDuration}</h4>
     </form>
   )
 }
 
+const mapStateToProps = state => ({
+  mapDistance: state.map.distance,
+  mapDuration: state.map.duration
+})
+
 QuoteForm = reduxForm({
-  // a unique name for the form
   form: 'quote'
 })(QuoteForm)
 
-export default QuoteForm
+export default withRouter(
+  connect(
+    mapStateToProps
+  )(QuoteForm)
+)

@@ -21,6 +21,20 @@ export function updateCenter (payload) {
   }
 }
 
+export function updateDistance (payload) {
+  return {
+    type: mapConstants.MAP_DISTANCE_UPDATED,
+    payload
+  }
+}
+
+export function updateDuration (payload) {
+  return {
+    type: mapConstants.MAP_DURATION_UPDATED,
+    payload
+  }
+}
+
 export function error (error) {
   return { type: mapConstants.ERROR, error }
 }

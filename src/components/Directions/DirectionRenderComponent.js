@@ -2,7 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { convertLatLngToObj } from '../../utility/helper'
-import { updateOrigin, updateDestination, updateCenter } from '../../actions/map.actions'
+import {
+  updateCenter,
+  updateDestination,
+  updateDistance,
+  updateDuration,
+  updateOrigin
+} from '../../actions/map.actions'
 require('@babel/polyfill')
 
 const { Marker, DirectionsRenderer } = require('react-google-maps')
@@ -30,6 +36,7 @@ const calculateTimeCost = (props) => {
   console.log(props)
   const { mapPoints } = props
   let distance
+  let duration
   var service = new window.google.maps.DistanceMatrixService()
 
   if (mapPoints) {
@@ -57,7 +64,20 @@ const calculateTimeCost = (props) => {
         result.rows[0].elements[0] &&
         result.rows[0].elements[0].distance &&
         result.rows[0].elements[0].distance.text ? result.rows[0].elements[0].distance.text : ''
-      console.log('distance', distance)
+
+      duration =
+        result &&
+        result.rows &&
+        result.rows[0] &&
+        result.rows[0] &&
+        result.rows[0] &&
+        result.rows[0].elements &&
+        result.rows[0].elements[0] &&
+        result.rows[0].elements[0].duration &&
+        result.rows[0].elements[0].duration.text ? result.rows[0].elements[0].duration.text : ''
+      // console.log('duration', distance)
+      props.updateDistance(distance)
+      props.updateDuration(duration)
     })
   }
 }
@@ -200,7 +220,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     updateOrigin: (newValue) => dispatch(updateOrigin(newValue)),
     updateDestination: (newValue) => dispatch(updateDestination(newValue)),
-    updateCenter: (newValue) => dispatch(updateCenter(newValue))
+    updateCenter: (newValue) => dispatch(updateCenter(newValue)),
+    updateDistance: (newValue) => dispatch(updateDistance(newValue)),
+    updateDuration: (newValue) => dispatch(updateDuration(newValue))
   }
 }
 
