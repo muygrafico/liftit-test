@@ -7,11 +7,9 @@ require('@babel/polyfill')
 
 const { Marker, DirectionsRenderer } = require('react-google-maps')
 let googleGeocoder
-let service
 
 window.onload = () => {
   googleGeocoder = new window.google.maps.Geocoder()
-  service = new window.google.maps.DistanceMatrixService()
 }
 
 const geoCoder = (address, callback) => {
@@ -28,17 +26,40 @@ const geoCoder = (address, callback) => {
   })
 }
 
-const calculateTimeCost = () => {
+const calculateTimeCost = (props) => {
+  console.log(props)
+  const { mapPoints } = props
+  let distance
   var service = new window.google.maps.DistanceMatrixService()
-  service.getDistanceMatrix({
-    origins: ['Bogota+Javeriana'],
-    destinations: ['Bogota+Centro+Comercial+Andino'],
-    travelMode: 'DRIVING',
-    avoidHighways: false,
-    avoidTolls: false
-  }, (result, status) => {
-    // console.log('DistanceMatrixService', result, status)
-  })
+
+  if (mapPoints) {
+    const origin = mapPoints.origin ? mapPoints.origin.split(',') : ['', '']
+    const origin1 = new window.google.maps.LatLng(Number(origin[0]), Number(origin[1]))
+    const destination = mapPoints.destination ? mapPoints.destination.split(',') : ['', '']
+    const destination1 = new window.google.maps.LatLng(Number(destination[0]), Number(destination[1]))
+
+    return service.getDistanceMatrix({
+      origins: [origin1],
+      destinations: [destination1],
+      travelMode: 'DRIVING',
+      avoidHighways: false,
+      avoidTolls: false
+    }, (result, status) => {
+      console.log('DistanceMatrixService', result)
+
+      distance =
+        result &&
+        result.rows &&
+        result.rows[0] &&
+        result.rows[0] &&
+        result.rows[0] &&
+        result.rows[0].elements &&
+        result.rows[0].elements[0] &&
+        result.rows[0].elements[0].distance &&
+        result.rows[0].elements[0].distance.text ? result.rows[0].elements[0].distance.text : ''
+      console.log('distance', distance)
+    })
+  }
 }
 
 class DirectionRenderComponent extends Component {
@@ -47,7 +68,9 @@ class DirectionRenderComponent extends Component {
     wayPoints: null,
     currentLocation: null,
     origin: null,
-    delayFactor: 2
+    delayFactor: 2,
+    distance: '',
+    cost: ''
   }
 
   componentDidUpdate (prevProps) {
@@ -65,6 +88,7 @@ class DirectionRenderComponent extends Component {
         this.props.mapPoints.destination
       )
       this.props.updateCenter('new center')
+      calculateTimeCost(this.props)
     }
   }
 
@@ -73,7 +97,6 @@ class DirectionRenderComponent extends Component {
       this.props.mapPoints.origin,
       this.props.mapPoints.destination
     )
-    calculateTimeCost()
   }
 
   async getDirections (startLoc, destinationLoc, wayPoints = []) {
